@@ -12,6 +12,7 @@ using Livet.EventListeners;
 using Livet.Messaging.Windows;
 
 using SortingSample.Models;
+using System.Threading.Tasks;
 
 namespace SortingSample.ViewModels
 {
@@ -78,6 +79,24 @@ namespace SortingSample.ViewModels
 
 		public SortReporter Reporter { get { return drawer.Reporter; } }
 
+		#region TargetKind変更通知プロパティ
+		SortTargetKind _TargetKind;
+
+		public SortTargetKind TargetKind
+		{
+			get { return _TargetKind; }
+			set
+			{
+				if (_TargetKind == value)
+					return;
+				_TargetKind = value;
+				RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+		public SortTargetKind[] AvailableTargetKinds { get { return (SortTargetKind[])Enum.GetValues(typeof(SortTargetKind)); } }
+
 		#region SortCommand
 		ViewModelCommand _SortCommand;
 
@@ -86,15 +105,12 @@ namespace SortingSample.ViewModels
 			get
 			{
 				if (_SortCommand == null)
-					_SortCommand = new ViewModelCommand(Sort);
+					_SortCommand = new ViewModelCommand(async () => await drawer.Sort(TargetKind));
 				return _SortCommand;
 			}
 		}
 
-		public async void Sort()
-		{
-			await drawer.Sort();
-		}
+		public async Task Sort() { await drawer.Sort(TargetKind); }
 		#endregion
 	}
 }

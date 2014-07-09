@@ -226,8 +226,8 @@ namespace SortingSample.Models
 		{
 			if (left < right)
 			{
+				var pivot = await Median(obj, left, left + (right - left) / 2, right);
 				int i = left, j = right;
-				var pivot = await Median(obj, i, i + (j - i) / 2, j);
 				while (true)
 				{
 					// a[] を pivot 以上と以下の集まりに分割する
@@ -270,6 +270,63 @@ namespace SortingSample.Models
 					}
 				}
 			} while (flag);
+		}
+
+		public static async Task QuickInsertionSort(SortedObject obj)
+		{
+			int l = 0, r = obj.Count - 1;
+			var pivot = await Median(obj, l, l + (r - l) / 2, r);
+			while (true)
+			{
+				// a[] を pivot 以上と以下の集まりに分割する
+				while (await obj.Compare(l, pivot.TargetIndex) < 0)
+					l++; // a[i] >= pivot となる位置を検索
+				while (await obj.Compare(pivot.TargetIndex, r) < 0)
+					r--; // a[j] <= pivot となる位置を検索
+				if (l >= r)
+					break;
+				await obj.Swap(l++, r--);
+			}
+			obj.UnmarkIndex(pivot);
+			for (int i = 1; i < obj.Count; i++)
+			{
+				for (int j = i; j >= 1 && await obj.Compare(j - 1, j) > 0; j -= 1)
+					await obj.Swap(j, j - 1);
+			}
+		}
+
+		public static async Task QuickInsertion2Sort(SortedObject obj) { await QuickInsertion2Sort(obj, 0, obj.Count - 1); }
+
+		static async Task QuickInsertion2Sort(SortedObject obj, int left, int right)
+		{
+			if (right - left < 36)
+			{
+				for (int i = left + 1; i <= right; i++)
+				{
+					for (int j = i; j >= left + 1 && await obj.Compare(j - 1, j) > 0; j -= 1)
+						await obj.Swap(j, j - 1);
+				}
+				return;
+			}
+			if (left < right)
+			{
+				int i = left, j = right;
+				var pivot = await Median(obj, i, i + (j - i) / 2, j);
+				while (true)
+				{
+					// a[] を pivot 以上と以下の集まりに分割する
+					while (await obj.Compare(i, pivot.TargetIndex) < 0)
+						i++; // a[i] >= pivot となる位置を検索
+					while (await obj.Compare(pivot.TargetIndex, j) < 0)
+						j--; // a[j] <= pivot となる位置を検索
+					if (i >= j)
+						break;
+					await obj.Swap(i++, j--);
+				}
+				obj.UnmarkIndex(pivot);
+				await QuickInsertion2Sort(obj, left, i - 1);  // 分割した左を再帰的にソート
+				await QuickInsertion2Sort(obj, j + 1, right); // 分割した右を再帰的にソート
+			}
 		}
 	}
 }

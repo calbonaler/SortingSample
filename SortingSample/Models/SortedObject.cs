@@ -61,7 +61,7 @@ namespace SortingSample.Models
 
 		public async Task<int> Compare(int index1, int index2)
 		{
-			var res = sortedArray[index1].CompareTo(sortedArray[index2]);
+			var res = sortedArray[index2].CompareTo(sortedArray[index1]);
 			if (reporter != null)
 				await reporter.ReportComparison(index1, index2);
 			return res;

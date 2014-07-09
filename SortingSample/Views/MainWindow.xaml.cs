@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SortingSample.Models;
+using SortingSample.ViewModels;
 
 namespace SortingSample.Views
 {
@@ -30,6 +33,20 @@ namespace SortingSample.Views
 		public MainWindow()
 		{
 			InitializeComponent();
+		}
+
+		public bool ScreenSaverMode
+		{
+			get { return controlPanel.Visibility == System.Windows.Visibility.Collapsed; }
+			set { controlPanel.Visibility = value ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible; }
+		}
+
+		public async Task Start(SortingMethod method, SortTargetKind target)
+		{
+			var vm = (MainWindowViewModel)DataContext;
+			vm.Method = method;
+			vm.TargetKind = target;
+			await vm.Sort();
 		}
 	}
 }

@@ -9,5 +9,9 @@
 	d:DesignWidth="300"
 	UseLayoutRounding="True"
 	SnapsToDevicePixels="True">
-	<Canvas x:Name="drawingCanvas" />
+	<Canvas x:Name="drawingCanvas">
+		<Border Canvas.Left="10" Canvas.Bottom="10" Panel.ZIndex="1000" Background="#E0FFFFFF" CornerRadius="3" BorderBrush="Black" BorderThickness="1">
+			<TextBlock x:Name="sortingMethod" FontSize="40" Margin="15,3,15,3"/>
+		</Border>
+	</Canvas>
 </UserControl>

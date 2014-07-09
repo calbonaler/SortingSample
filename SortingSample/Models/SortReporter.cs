@@ -27,6 +27,8 @@ namespace SortingSample.Models
 
 		public void SetUnmarked(Action<int> unmarked) { onUnmarked = unmarked; }
 
+		public SortingMethod SortingMethod { get; set; }
+
 		public void Initialize()
 		{
 			if (onInitialized != null)

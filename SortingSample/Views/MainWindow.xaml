@@ -16,9 +16,11 @@
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
 	<DockPanel>
-		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+		<StackPanel x:Name="controlPanel" DockPanel.Dock="Top" Orientation="Horizontal">
 			<Label Margin="3" Content="Sorting _Method:" />
 			<ComboBox Margin="3" SelectedValue="{Binding Method}" ItemsSource="{Binding AvailableMethods}" />
+			<Label Margin="3" Content="Sort _Target:" />
+			<ComboBox Margin="3" SelectedValue="{Binding TargetKind}" ItemsSource="{Binding AvailableTargetKinds}" />
 			<Button Margin="3" Content="_Sort" Command="{Binding SortCommand}" />
 		</StackPanel>
 		<v:SortViewer Reporter="{Binding Reporter}" />

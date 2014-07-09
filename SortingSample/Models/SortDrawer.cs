@@ -27,12 +27,21 @@ namespace SortingSample.Models
 		}
 		#endregion
 
+		static readonly Random random = new Random();
+
 		public SortReporter Reporter { get; private set; }
 
-		public async Task Sort()
+		public async Task Sort(SortTargetKind kind)
 		{
+			Reporter.SortingMethod = Method;
 			var method = typeof(Sorter).GetMethod(Enum.GetName(typeof(SortingMethod), Method) + "Sort");
-			var obj = new SortedObject(Reporter, -100, 100, 100);
+			SortedObject obj;
+			if (kind == SortTargetKind.Random)
+				obj = new SortedObject(Reporter, Enumerable.Range(1, 50).OrderBy(x => random.Next()));
+			else if (kind == SortTargetKind.Ascending)
+				obj = new SortedObject(Reporter, Enumerable.Range(1, 50));
+			else
+				obj = new SortedObject(Reporter, Enumerable.Range(1, 50).Reverse());
 			await (Task)method.Invoke(null, new object[] { obj });
 		}
 	}
@@ -49,5 +58,12 @@ namespace SortingSample.Models
 		Heap,
 		Quick,
 		OddEven,
+	}
+
+	public enum SortTargetKind
+	{
+		Random,
+		Ascending,
+		Descending,
 	}
 }

@@ -89,6 +89,7 @@ namespace SortingSample.Views
 					Canvas.SetLeft(rects[i], i * ActualWidth / rects.Length);
 					Canvas.SetTop(rects[i], ActualHeight * (max - Math.Max(Reporter.SortTarget[i], 0)) / (max - min));
 				}
+				sortingMethod.Text = Reporter.SortingMethod.ToString();
 			}
 		}
 
