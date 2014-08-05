@@ -48,9 +48,8 @@ namespace SortScreenSaver
 				screenSaver.MouseMove += screenSaver_MouseMove;
 				Random random = new Random();
 				SortingMethod[] methods = (SortingMethod[])Enum.GetValues(typeof(SortingMethod));
-				SortTargetKind[] targetKinds = (SortTargetKind[])Enum.GetValues(typeof(SortTargetKind));
 				while (true)
-					await screenSaver.Start(methods[random.Next(methods.Length)], targetKinds[random.Next(targetKinds.Length)]);
+					await screenSaver.Start(methods[random.Next(methods.Length)], SortTargetKind.Random);
 			}
 		}
 
